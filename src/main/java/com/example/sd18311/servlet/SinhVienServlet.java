@@ -11,6 +11,9 @@ import java.util.ArrayList;
 @WebServlet(name = "SinhVienServlet",
         value = {"/sinh-vien/trang-chu",
                 "/sinh-vien/add",
+                "/sinh-vien/detail",
+                "/sinh-vien/update",
+
         })
 public class SinhVienServlet extends HttpServlet {
     ArrayList<SinhVien> listSinhVien = new ArrayList<>();
@@ -22,20 +25,52 @@ public class SinhVienServlet extends HttpServlet {
         listSinhVien.add(new SinhVien("113", "Nguyen Van A", 21, "HN"));
 
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("listSinhVien", listSinhVien);
-        request.getRequestDispatcher("/trang-chu.jsp").forward(request, response);
+        String uri = request.getRequestURI();
+        System.out.println(uri);
+        if (uri.equals("/sinh-vien/trang-chu")) {
+            request.setAttribute("listSinhVien", listSinhVien);
+            request.getRequestDispatcher("/trang-chu.jsp").forward(request, response);
+        } else if (uri.equals("/sinh-vien/detail")) {
+            String ma = request.getParameter("maSinhVien");
+            SinhVien sinhVienDetail = new SinhVien();
+            for (SinhVien sinhVien : listSinhVien) {
+                if (sinhVien.getMaSv().equals(ma)) {
+                    sinhVienDetail = sinhVien;
+                }
+            }
+            request.setAttribute("sinhVienDetail", sinhVienDetail);
+            request.getRequestDispatcher("/chi-tiet.jsp").forward(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String ma = request.getParameter("maSinhVien");
-        String ten = request.getParameter("tenSinhVien");
-        String diaChi = request.getParameter("diaChi");
-        Integer tuoi = Integer.parseInt(request.getParameter("tuoi"));
-        SinhVien sinhVien = new SinhVien(ma, ten, tuoi, diaChi);
-        listSinhVien.add(sinhVien);
-        response.sendRedirect("/sinh-vien/trang-chu");
+        String uri = request.getRequestURI();
+        if (uri.equals("/sinh-vien/add")) {
+            String ma = request.getParameter("maSinhVien");
+            String ten = request.getParameter("tenSinhVien");
+            String diaChi = request.getParameter("diaChi");
+            Integer tuoi = Integer.parseInt(request.getParameter("tuoi"));
+            SinhVien sinhVien = new SinhVien(ma, ten, tuoi, diaChi);
+            listSinhVien.add(sinhVien);
+            response.sendRedirect("/sinh-vien/trang-chu");
+        } else if (uri.equals("/sinh-vien/update")) {
+            // thuc hien update
+            String ma = request.getParameter("maSinhVien");
+            String ten = request.getParameter("tenSinhVien");
+            String diaChi = request.getParameter("diaChi");
+            Integer tuoi = Integer.parseInt(request.getParameter("tuoi"));
+            for (SinhVien sinhVien : listSinhVien) {
+                if (sinhVien.getMaSv().equals(ma)) {
+                    sinhVien.setTenSv(ten);
+                    sinhVien.setTuoi(tuoi);
+                    sinhVien.setDiaChi(diaChi);
+                }
+            }
+            response.sendRedirect("/sinh-vien/trang-chu");
+        }
     }
 }
