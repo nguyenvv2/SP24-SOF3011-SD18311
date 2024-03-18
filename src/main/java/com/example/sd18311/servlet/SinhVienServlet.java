@@ -13,6 +13,7 @@ import java.util.ArrayList;
                 "/sinh-vien/add",
                 "/sinh-vien/detail",
                 "/sinh-vien/update",
+                "/sinh-vien/delete",
 
         })
 public class SinhVienServlet extends HttpServlet {
@@ -43,7 +44,17 @@ public class SinhVienServlet extends HttpServlet {
             }
             request.setAttribute("sinhVienDetail", sinhVienDetail);
             request.getRequestDispatcher("/chi-tiet.jsp").forward(request, response);
+        } else if (uri.contains("/sinh-vien/delete")) {
+            String ma = request.getParameter("maSinhVien");
+            for (SinhVien sinhVien : listSinhVien) {
+                if (sinhVien.getMaSv().equals(ma)) {
+                    listSinhVien.remove(sinhVien);
+                    break;
+                }
+            }
+            response.sendRedirect("/sinh-vien/trang-chu");
         }
+
     }
 
     @Override

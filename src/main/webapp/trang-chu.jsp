@@ -81,6 +81,7 @@
             <td>${s.diaChi}</td>
             <td>${s.tuoi}</td>
             <td><a href="/sinh-vien/detail?maSinhVien=${s.maSv}" class="btn btn-dark">Detail</a></td>
+            <td><a href="/sinh-vien/delete?maSinhVien=${s.maSv}" class="btn btn-dark">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
