@@ -12,20 +12,20 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "san_pham")
 @Entity
-@Table(name = "danh_muc")
-public class DanhMuc {
+public class SanPham {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ma_danh_muc")
-    private String maDanhMuc;
+    @Column(name = "ma_san_pham")
+    private String maSanPham;
 
-    @Column(name = "ten_danh_muc")
-    private String tenDanhMuc;
+    @Column(name = "ten_san_pham")
+    private String tenSanPham;
 
     @Column(name = "trang_thai")
     private String trangThai;
@@ -36,15 +36,7 @@ public class DanhMuc {
     @Column(name = "ngay_sua")
     private Date ngaySua;
 
-    @Override
-    public String toString() {
-        return "DanhMuc{" +
-                "id=" + id +
-                ", maDanhMuc='" + maDanhMuc + '\'' +
-                ", tenDanhMuc='" + tenDanhMuc + '\'' +
-                ", trangThai='" + trangThai + '\'' +
-                ", ngayTao=" + ngayTao +
-                ", ngaySua=" + ngaySua +
-                '}';
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_danh_muc")
+    private DanhMuc danhMuc;
 }
